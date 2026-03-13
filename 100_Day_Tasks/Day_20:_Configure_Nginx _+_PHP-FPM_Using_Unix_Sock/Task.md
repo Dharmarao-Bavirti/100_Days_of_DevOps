@@ -2,17 +2,23 @@
 
 The Nautilus application development team is planning to launch a new PHP-based application, which they want to deploy on Nautilus infra in Stratos DC. The development team had a meeting with the production support team and they have shared some requirements regarding the infrastructure. Below are the requirements they shared:
 
-a. Install nginx on app server 1 , configure it to use port 8091 and its document root should be /var/www/html.
+a. Install nginx on app server 3 , configure it to use port 8096 and its document root should be /var/www/html.
 
-b. Install php-fpm version 8.1 on app server 1, it must use the unix socket /var/run/php-fpm/default.sock (create the parent directories if don't exist).
+b. Install php-fpm version 8.2 on app server 3, it must use the unix socket /var/run/php-fpm/default.sock (create the parent directories if don't exist).
 
 c. Configure php-fpm and nginx to work together.
 
-d. Once configured correctly, you can test the website using curl http://stapp01:8091/index.php command from jump host.
+d. Once configured correctly, you can test the website using curl http://stapp03:8093/index.php command from jump host.
 
 
 
 ### This is what i did to accomplish the task:
+
+### Login to app server 3
+
+```
+ssh banner@stapp03
+```
 
 ### Install Nginx
 
@@ -28,8 +34,8 @@ sudo vi /etc/nginx/nginx.conf
 
 ```
  server {
-        listen       8091 ;
-        listen       [::]:8091;
+        listen       8096 ;
+        listen       [::]:8096;
         server_name  stapp03;
         root /var/www/html;
  index index.php index.html index.htm;
@@ -49,18 +55,18 @@ sudo vi /etc/nginx/nginx.conf
   error_page 500 502 503 504 /50x.html;
 
 ```
-![Screenshot (102)|636x499](upload://wRNYHSxgIMcd5qXocDsQcBELrrw.png)
+
 
 
 sudo systemctl restart nginx
 
-### Install PHP-FPM 8.3
+### Install PHP-FPM 8.2
 
 ```
  sudo dnf install epel-release -y
  sudo dnf install https://rpms.remirepo.net/enterprise/remi-release-9.rpm -y
  sudo dnf module list php
- sudo dnf module enable php:remi-8.3 -y
+ sudo dnf module enable php:remi-8.2 -y
  sudo dnf install php-fpm php php-cli php-common php-mysqlnd php-gd php-xml php-mbstring php-pdo php-opcache -y
  sudo systemctl start php-fpm
  sudo systemctl enable php-fpm
@@ -88,7 +94,6 @@ listen.group = nginx
 listen.mode = 0660
 
 ```
-![Screenshot (103)|690x377](upload://d6EzYme1TNB3ByyN7fViZBx9CGE.png)
 
 ### Also, ensure the directory exists:
 
@@ -102,7 +107,7 @@ sudo systemctl enable --now php-fpm
 
 sudo systemctl restart nginx # or apache2, etc.
 
-curl localhost:8091
+curl localhost:8096
 
 
 #### Testing:
