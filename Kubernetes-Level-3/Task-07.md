@@ -9,19 +9,20 @@ value: R00t
 Create a secret named `mysql-user-pass` with key/value pairs as below:  
 ```
 name: username
-value: kodekloud_pop
+value: kodekloud_tim
+
 name: password
-value: YchZHRcLkL
+value: BruCStnMT5
 ```
 Create a secret named `mysql-db-url` with key/value pairs as below:  
 ```
 name: database
-value: kodekloud_db8
+value: kodekloud_db6
 ```
 Create a secret named `mysql-host` with key/value pairs as below:  
 ```
 name: host
-value: mysql-service
+value: 127.0.0.1
 ```
 Create a config map `php-config` for php.ini with variables_order = "EGPCS" data.   
 Create a deployment named `lemp-wp`.   
@@ -40,8 +41,13 @@ Note: The kubectl on jump_host has been configured to work with the kubernetes c
 Solution:  
 1. Create secrets:  
 ```
-kubectl create secret generic mysql-root-pass \
---from-literal=password=R00t \
+kubectl create secret generic mysql-root-pass --from-literal=password=R00t
+
+kubectl create secret generic mysql-user-pass --from-literal=username=kodekloud_tim --from-literal=password=BruCStnMT5
+
+kubectl create secret generic mysql-db-url --from-literal=database=kodekloud_db6
+
+kubectl create secret generic mysql-host --from-literal=host=127.0.0.1
 ```
 2. Then, create deploy.yaml:  
 ```yaml
