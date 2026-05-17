@@ -54,15 +54,15 @@ cat /etc/os-release # Command to determine the Linux distribution and version
 
 # Since our system is running CentOS Stream 9, you will use yum (or dnf, which is the next-generation version of yum that is used by default on CentOS 8 and later) as your package manager.
 
-sudo yum update
-sudo yum install java-17-openjdk -y
+sudo apt update
+sudo apt install openjdk-21-jdk -y
 java -version
 sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
 sudo yum install -y wget
 sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
 sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
-sudo yum update
-sudo yum install jenkins -y
+sudo apt update
+sudo apt install jenkins -y
  sudo systemctl start jenkins
  sudo systemctl enable jenkins
  sudo systemctl status jenkins
